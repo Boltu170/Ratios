@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 6 — Financial Ratios</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1eb;
+    --white: #ffffff;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --muted: #777;
+    --border: #ddd;
+    --yellow: #f5c800;
+    --yellow-light: #fff9d6;
+    --blue: #1a56db;
+    --blue-light: #e8f0ff;
+    --green: #1a7a4a;
+    --green-light: #e6f5ee;
+    --red: #c0392b;
+    --red-light: #fdecea;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--dark); font-family: 'Sora', sans-serif; font-size: 15px; line-height: 1.65; }
+
+header { background: var(–dark); color: var(–yellow); padding: 2.5rem 2rem; text-align: center; }
+header h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+header h1 span { color: #fff; }
+header p { color: #aaa; font-size: 0.9rem; margin-top: 0.5rem; }
+
+nav { background: var(–white); border-bottom: 2px solid var(–border); display: flex; overflow-x: auto; }
+nav button { background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; color: var(–muted); font-family: ‘Sora’, sans-serif; font-size: 0.82rem; font-weight: 600; padding: 1rem 1.2rem; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+nav button:hover { color: var(–dark); }
+nav button.active { color: var(–dark); border-bottom-color: var(–yellow); }
+
+.section { display: none; padding: 2rem; max-width: 1000px; margin: 0 auto; }
+.section.active { display: block; }
+
+h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.5px; }
+h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 2rem 0 0.75rem; color: var(–muted); }
+
+.formula-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.fc { background: var(–white); border: 1px solid var(–border); border-radius: 10px; padding: 1.2rem; border-top: 4px solid var(–yellow); }
+.fc.liq { border-top-color: var(–blue); }
+.fc.eff { border-top-color: var(–green); }
+.fc-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.5rem; color: var(–dark); }
+.fc-formula { font-family: ‘JetBrains Mono’, monospace; font-size: 0.82rem; background: var(–bg); border-radius: 6px; padding: 0.5rem 0.75rem; color: var(–dark); margin: 0.4rem 0; border: 1px solid var(–border); }
+.fc-hint { font-size: 0.8rem; color: var(–muted); margin-top: 0.35rem; }
+
+.pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 99px; margin-right: 0.3rem; }
+.pill.p { background: var(–yellow-light); color: #7a5c00; }
+.pill.l { background: var(–blue-light); color: var(–blue); }
+.pill.e { background: var(–green-light); color: var(–green); }
+
+.steps { display: flex; flex-direction: column; gap: 0.75rem; margin: 1rem 0; }
+.step { display: flex; gap: 1rem; background: var(–white); border: 1px solid var(–border); border-radius: 10px; padding: 1rem 1.2rem; align-items: flex-start; }
+.step-num { background: var(–dark); color: var(–yellow); font-weight: 800; font-size: 0.9rem; min-width: 1.8rem; height: 1.8rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step strong { display: block; margin-bottom: 0.2rem; }
+.step p { font-size: 0.88rem; color: var(–mid); }
+.big-num { font-size: 1.6rem; font-weight: 800; color: var(–dark); font-family: ‘JetBrains Mono’, monospace; }
+
+.info { background: var(–yellow-light); border: 1px solid #e8d800; border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.85rem; color: #5a4000; margin: 0.75rem 0; }
+.info strong { color: #3a2800; }
+
+.table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: 10px; border: 1px solid var(–border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; background: var(–white); }
+th { background: var(–dark); color: var(–yellow); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.7rem 1rem; text-align: left; }
+th.blue { color: #93c5fd; }
+th.green { color: #6ee7b7; }
+td { padding: 0.6rem 1rem; border-bottom: 1px solid var(–border); color: var(–dark); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(–bg); }
+.mono { font-family: ‘JetBrains Mono’, monospace; }
+td.good { color: var(–green); font-weight: 700; }
+td.bad { color: var(–red); font-weight: 700; }
+td.warn { color: #b45309; font-weight: 700; }
+td em { font-size: 0.78rem; color: var(–muted); font-style: normal; }
+
+.data-box { background: var(–white); border: 1px solid var(–border); border-radius: 10px; padding: 1.25rem; margin: 1rem 0; }
+.data-box h4 { font-weight: 700; margin-bottom: 0.75rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(–muted); }
+.data-row { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(–border); font-size: 0.88rem; }
+.data-row:last-child { border: none; }
+.data-row .val { font-family: ‘JetBrains Mono’, monospace; font-weight: 600; color: var(–dark); }
+
+.verdict { background: var(–dark); color: #fff; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
+.verdict h4 { color: var(–yellow); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.verdict p { font-size: 0.88rem; line-height: 1.75; color: #ccc; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+.company-card { background: var(–white); border: 2px solid var(–border); border-radius: 10px; padding: 1.25rem; }
+.company-card h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem; color: var(–dark); }
+.company-card.howden h4 { color: var(–blue); }
+.company-card .sub { font-size: 0.75rem; color: var(–muted); margin-bottom: 0.75rem; }
+.company-card ul { padding-left: 0; list-style: none; }
+.company-card li { font-size: 0.83rem; padding: 0.25rem 0; border-bottom: 1px solid var(–border); color: var(–mid); }
+.company-card li:last-child { border: none; }
+.li-good { color: var(–green) !important; }
+.li-bad { color: var(–red) !important; }
+.li-warn { color: #b45309 !important; }
+
+.rec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+.rec-card { background: var(–white); border: 1px solid var(–border); border-radius: 10px; padding: 1.1rem; }
+.rec-badge { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.6rem; border-radius: 99px; display: inline-block; margin-bottom: 0.5rem; }
+.rec-badge.st { background: var(–yellow-light); color: #7a5c00; }
+.rec-badge.lt { background: var(–green-light); color: var(–green); }
+.rec-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; color: var(–dark); }
+.rec-card p { font-size: 0.8rem; color: var(–muted); line-height: 1.6; }
+
+/* REVEAL SYSTEM */
+.try-box { background: var(–white); border: 2px dashed var(–border); border-radius: 10px; padding: 1.25rem; margin: 0.75rem 0; text-align: center; }
+.try-box > p { color: var(–muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.reveal-btn { background: var(–dark); color: var(–yellow); border: none; border-radius: 8px; padding: 0.6rem 1.4rem; font-family: ‘Sora’, sans-serif; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+.reveal-btn:hover { background: #333; }
+.reveal-btn.revealed { background: var(–green); color: #fff; }
+.answer { display: none; margin-top: 1rem; text-align: left; }
+.answer.visible { display: block; }
+
+/* RATIO CHECKLIST */
+.checklist-box {
+background: var(–white);
+border: 2px solid var(–dark);
+border-radius: 12px;
+padding: 1.25rem 1.5rem;
+margin: 1rem 0;
+}
+.checklist-box .cl-title {
+font-size: 0.75rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 1px;
+color: var(–muted);
+margin-bottom: 0.75rem;
+}
+.checklist-box .cl-title span {
+display: inline-block;
+background: var(–dark);
+color: var(–yellow);
+padding: 0.1rem 0.5rem;
+border-radius: 4px;
+margin-right: 0.4rem;
+font-size: 0.7rem;
+}
+.cl-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cl-item {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+background: var(–bg);
+border: 1.5px solid var(–border);
+border-radius: 8px;
+padding: 0.5rem 0.9rem;
+cursor: pointer;
+transition: all 0.15s;
+user-select: none;
+}
+.cl-item:hover { border-color: var(–dark); }
+.cl-item.done { background: var(–green-light); border-color: var(–green); }
+.cl-item.done .cl-check { background: var(–green); border-color: var(–green); color: #fff; }
+.cl-check {
+width: 1.2rem;
+height: 1.2rem;
+border: 2px solid var(–border);
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.7rem;
+flex-shrink: 0;
+transition: all 0.15s;
+}
+.cl-label { font-size: 0.82rem; font-weight: 600; color: var(–dark); }
+.cl-item.done .cl-label { color: var(–green); text-decoration: line-through; }
+.cl-type { font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 99px; margin-left: 0.2rem; }
+.cl-type.p { background: var(–yellow-light); color: #7a5c00; }
+.cl-type.l { background: var(–blue-light); color: var(–blue); }
+.cl-type.e { background: var(–green-light); color: var(–green); }
+.cl-progress { font-size: 0.78rem; color: var(–muted); margin-top: 0.75rem; }
+.cl-progress strong { color: var(–dark); }
+
+@media (max-width: 600px) {
+header h1 { font-size: 1.8rem; }
+.compare-grid { grid-template-columns: 1fr; }
+.section { padding: 1rem; }
+h2 { font-size: 1.4rem; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>Topic 6 — <span>Financial Ratios</span></h1>
+  <p>All questions covered · Try it first · Then reveal the answer</p>
+</header>
+
+<nav>
+  <button class="active" onclick="show('formulas',this)">📐 Formulas</button>
+  <button onclick="show('q1',this)">Q1 · Champ Corp</button>
+  <button onclick="show('q2',this)">Q2 · Kingfisher vs Howden</button>
+  <button onclick="show('q3',this)">Q3 · Gold Coast 2023</button>
+  <button onclick="show('q4',this)">Q4 · Compare & Recs</button>
+</nav>
+
+<!-- FORMULAS -->
+
+<div id="formulas" class="section active">
+  <h2>All the Formulas You Need</h2>
+
+  <h3><span class="pill p">Profitability</span> Higher = Better</h3>
+  <div class="formula-grid">
+    <div class="fc">
+      <div class="fc-name">Gross Profit Margin %</div>
+      <div class="fc-formula">Gross Profit ÷ Sales × 100</div>
+      <div class="fc-hint">Profit before overheads. Shows if pricing/cost of goods is healthy.</div>
+    </div>
+    <div class="fc">
+      <div class="fc-name">Net Profit Margin %</div>
+      <div class="fc-formula">Net Profit ÷ Sales × 100</div>
+      <div class="fc-hint">Profit after ALL costs. If much lower than gross margin, overheads are a problem.</div>
+    </div>
+    <div class="fc">
+      <div class="fc-name">ROCE %</div>
+      <div class="fc-formula">Operating Profit ÷ Capital Employed × 100</div>
+      <div class="fc-hint">Capital Employed = Total Assets − Current Liabilities. How well is the business using its capital?</div>
+    </div>
+  </div>
+
+  <h3><span class="pill l">Liquidity</span> Can the business pay its short-term bills?</h3>
+  <div class="formula-grid">
+    <div class="fc liq">
+      <div class="fc-name">Current Ratio</div>
+      <div class="fc-formula">Current Assets ÷ Current Liabilities</div>
+      <div class="fc-hint">Ideal: ~2:1. Below 1 = danger zone. Too high = cash sitting idle.</div>
+    </div>
+    <div class="fc liq">
+      <div class="fc-name">Quick (Acid Test) Ratio</div>
+      <div class="fc-formula">(Current Assets − Stock) ÷ Current Liabilities</div>
+      <div class="fc-hint">Removes stock (slowest asset to convert to cash). Ideal: ~1:1.</div>
+    </div>
+  </div>
+
+  <h3><span class="pill e">Efficiency</span> How well are assets and money being used?</h3>
+  <div class="formula-grid">
+    <div class="fc eff">
+      <div class="fc-name">Asset Turnover</div>
+      <div class="fc-formula">Sales ÷ Total Assets</div>
+      <div class="fc-hint">Revenue per £1 of assets. Higher = more efficient use of assets.</div>
+    </div>
+    <div class="fc eff">
+      <div class="fc-name">Trade Payable Days</div>
+      <div class="fc-formula">(Trade Payables ÷ Cost of Sales) × 365</div>
+      <div class="fc-hint">How long the business takes to pay its suppliers.</div>
+    </div>
+    <div class="fc eff">
+      <div class="fc-name">Trade Receivable Days</div>
+      <div class="fc-formula">(Trade Receivables ÷ Sales) × 365</div>
+      <div class="fc-hint">How long customers take to pay. Lower = collecting cash faster.</div>
+    </div>
+    <div class="fc eff">
+      <div class="fc-name">Inventory Days</div>
+      <div class="fc-formula">((Opening + Closing Stock) ÷ 2 ÷ Cost of Sales) × 365</div>
+      <div class="fc-hint">How long stock sits before being sold. Lower = moving faster.</div>
+    </div>
+  </div>
+
+  <div class="info">
+    <strong>Golden rule:</strong> A ratio on its own means nothing. Always compare it to the previous year OR to a competitor to say something useful.
+  </div>
+</div>
+
+<!-- Q1 -->
+
+<div id="q1" class="section">
+  <h2>Q1 — Champ Corp: Quick Ratio</h2>
+  <div class="data-box">
+    <h4>Balance Sheet</h4>
+    <div class="data-row"><span>Cash</span><span class="val">£100,000</span></div>
+    <div class="data-row"><span>Inventory (Stock)</span><span class="val">£80,000</span></div>
+    <div class="data-row"><span>Accounts Receivable</span><span class="val">£120,000</span></div>
+    <div class="data-row"><span>Net Fixed Assets</span><span class="val">£200,000</span></div>
+    <div class="data-row"><span>Current Liabilities</span><span class="val">£125,000</span></div>
+  </div>
+  <div class="checklist-box">
+    <div class="cl-title"><span>Step 1</span> Tick each ratio off as you calculate it</div>
+    <div class="cl-items" id="cl-q1">
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q1','q1-prog')"><div class="cl-check"></div><span class="cl-label">Quick (Acid Test) Ratio</span><span class="cl-type l">Liquidity</span></div>
+    </div>
+    <div class="cl-progress" id="q1-prog">0 / 1 done</div>
+  </div>
+
+  <div class="try-box">
+    <p>👆 Use the data above. Calculate the <strong>Quick Ratio</strong> yourself first, then reveal.</p>
+    <button class="reveal-btn" onclick="reveal('q1-ans',this)">👁 Show Answer</button>
+    <div class="answer" id="q1-ans">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <strong>Add all Current Assets</strong>
+            <p>Cash + Inventory + Receivables = £100,000 + £80,000 + £120,000 = £300,000</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <strong>Remove Stock</strong>
+            <p>£300,000 − £80,000 = £220,000 (stock removed — it's the hardest asset to sell quickly)</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <strong>Divide by Current Liabilities</strong>
+            <p>£220,000 ÷ £125,000 = <span class="big-num">1.76</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="verdict">
+        <h4>✅ Answer: D — 1.76</h4>
+        <p>Above the 1:1 benchmark so the business can cover its short-term debts without needing to sell stock. Liquidity is healthy.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q2 -->
+
+<div id="q2" class="section">
+  <h2>Q2 — Kingfisher vs Howden Joinery</h2>
+  <div class="info"><strong>Task:</strong> Calculate key ratios for both companies (2022 and 2023), compare them, and decide which is the better investment. All the data you need is in the table below.</div>
+
+  <h3>The Data (£m)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Item</th><th class="blue">Kingfisher 2023</th><th class="blue">Kingfisher 2022</th><th class="green">Howden 2023</th><th class="green">Howden 2022</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Sales</td><td class="mono">12,980</td><td class="mono">13,059</td><td class="mono">2,310.9</td><td class="mono">2,319</td></tr>
+        <tr><td>Cost of Sales</td><td class="mono">8,204</td><td class="mono">8,264</td><td class="mono">907</td><td class="mono">907.8</td></tr>
+        <tr><td>Gross Profit</td><td class="mono">4,776</td><td class="mono">4,795</td><td class="mono">1,403.9</td><td class="mono">1,411.2</td></tr>
+        <tr><td>Net Profit</td><td class="mono">345</td><td class="mono">471</td><td class="mono">254.6</td><td class="mono">374.2</td></tr>
+        <tr><td>Operating Profit</td><td class="mono">580</td><td class="mono">723</td><td class="mono">340.2</td><td class="mono">415.2</td></tr>
+        <tr><td>Stock</td><td class="mono">2,914</td><td class="mono">3,070</td><td class="mono">382.8</td><td class="mono">373.3</td></tr>
+        <tr><td>Current Assets</td><td class="mono">3,696</td><td class="mono">3,762</td><td class="mono">899.8</td><td class="mono">946.9</td></tr>
+        <tr><td>Trade Receivables</td><td class="mono">344</td><td class="mono">347</td><td class="mono">194.5</td><td class="mono">233.3</td></tr>
+        <tr><td>Total Assets</td><td class="mono">11,900</td><td class="mono">12,103</td><td class="mono">2,064.5</td><td class="mono">2,032.7</td></tr>
+        <tr><td>Current Liabilities</td><td class="mono">2,862</td><td class="mono">2,899</td><td class="mono">468</td><td class="mono">541.2</td></tr>
+        <tr><td>Trade Payables</td><td class="mono">2,445</td><td class="mono">2,483</td><td class="mono">373.2</td><td class="mono">433.9</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="checklist-box">
+    <div class="cl-title"><span>Step 1</span> Tick each ratio off as you calculate it — do BOTH companies, BOTH years</div>
+    <div class="cl-items" id="cl-q2">
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Gross Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Net Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">ROCE</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Current Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Quick Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Asset Turnover</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Trade Payable Days</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q2','q2-prog')"><div class="cl-check"></div><span class="cl-label">Trade Receivable Days</span><span class="cl-type e">Efficiency</span></div>
+    </div>
+    <div class="cl-progress" id="q2-prog">0 / 8 done</div>
+  </div>
+
+  <div class="try-box">
+    <p>Fill in the ratios yourself first using the formulas tab, then reveal.</p>
+    <button class="reveal-btn" onclick="reveal('q2-ratios',this)">👁 Show Calculated Ratios</button>
+    <div class="answer" id="q2-ratios">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ratio</th><th class="blue">King 2023</th><th class="blue">King 2022</th><th class="green">Howden 2023</th><th class="green">Howden 2022</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Gross Profit Margin</strong></td><td class="mono">36.8%</td><td class="mono">36.7%</td><td class="mono good">60.7%</td><td class="mono good">60.9%</td></tr>
+            <tr><td><strong>Net Profit Margin</strong></td><td class="mono">2.66%</td><td class="mono">3.61%</td><td class="mono good">11.02%</td><td class="mono good">16.13%</td></tr>
+            <tr><td><strong>ROCE</strong></td><td class="mono">6.42%</td><td class="mono">7.86%</td><td class="mono good">21.32%</td><td class="mono good">27.84%</td></tr>
+            <tr><td><strong>Current Ratio</strong></td><td class="mono">1.29</td><td class="mono">1.30</td><td class="mono good">1.92</td><td class="mono">1.75</td></tr>
+            <tr><td><strong>Quick Ratio</strong></td><td class="mono bad">0.27 ⚠️</td><td class="mono bad">0.24 ⚠️</td><td class="mono good">1.10</td><td class="mono">1.06</td></tr>
+            <tr><td><strong>Asset Turnover</strong></td><td class="mono">1.09</td><td class="mono">1.08</td><td class="mono">1.12</td><td class="mono">1.14</td></tr>
+            <tr><td><strong>Trade Payable Days</strong></td><td class="mono">108.8</td><td class="mono">109.6</td><td class="mono">150.2</td><td class="mono">174.7</td></tr>
+            <tr><td><strong>Trade Receivable Days</strong></td><td class="mono">9.68</td><td class="mono">9.69</td><td class="mono">30.7</td><td class="mono">36.7</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info"><strong>ROCE example:</strong> Howden 2023 = 340.2 ÷ (2064.5 − 468) × 100 = 21.32% &nbsp;|&nbsp; <strong>Quick ratio:</strong> Kingfisher 2023 = (3696 − 2914) ÷ 2862 = 0.27</div>
+    </div>
+  </div>
+
+  <div class="try-box" style="margin-top:0.75rem;">
+    <p>Now write your comparison — which company is the better investment and why?</p>
+    <button class="reveal-btn" onclick="reveal('q2-compare',this)">👁 Show Comparison & Verdict</button>
+    <div class="answer" id="q2-compare">
+      <div class="compare-grid">
+        <div class="company-card king">
+          <h4>Kingfisher PLC</h4>
+          <div class="sub">B&amp;Q · Screwfix · Castorama</div>
+          <ul>
+            <li>✅ Massive scale — £12.9bn in sales</li>
+            <li>✅ Stable gross margin around 37%</li>
+            <li class="li-bad">❌ Net margin only 2.66% and falling</li>
+            <li class="li-bad">❌ ROCE just 6.42% — poor return</li>
+            <li class="li-bad">❌ Quick ratio 0.27 — serious red flag</li>
+            <li class="li-bad">❌ All profitability ratios declining year on year</li>
+          </ul>
+        </div>
+        <div class="company-card howden">
+          <h4>Howden Joinery</h4>
+          <div class="sub">Trade kitchens &amp; joinery</div>
+          <ul>
+            <li class="li-good">✅ Gross margin 60.7% — nearly double Kingfisher</li>
+            <li class="li-good">✅ Net margin 11.02%</li>
+            <li class="li-good">✅ ROCE 21.32% — excellent capital efficiency</li>
+            <li class="li-good">✅ Quick ratio 1.10 — healthy liquidity</li>
+            <li class="li-good">✅ Receivable days falling — collecting cash faster</li>
+            <li class="li-warn">⚠️ Profits declined from 2022 — worth monitoring</li>
+          </ul>
+        </div>
+      </div>
+      <div class="verdict">
+        <h4>🏆 Better Investment: Howden Joinery</h4>
+        <p>Despite being far smaller, Howden outperforms Kingfisher on every profitability measure. Its 60.7% gross margin vs Kingfisher's 36.8% reflects a higher-value, specialist product mix. ROCE of 21.32% shows excellent capital efficiency. Crucially, Howden's quick ratio of 1.10 shows it can meet short-term obligations — Kingfisher's 0.27 is a major liquidity red flag. Both companies' profits fell from 2022, but Howden's foundations remain significantly stronger.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q3 -->
+
+<div id="q3" class="section">
+  <h2>Q3 — Gold Coast Estate Ltd · 2023</h2>
+  <div class="data-box">
+    <h4>Given Data (Year ended 31 Dec 2023)</h4>
+    <div class="data-row"><span>Sales</span><span class="val">£65,000</span></div>
+    <div class="data-row"><span>Gross Profit</span><span class="val">£45,000</span></div>
+    <div class="data-row"><span>Net Profit</span><span class="val">£8,400</span></div>
+    <div class="data-row"><span>Opening Stock</span><span class="val">£9,000</span></div>
+    <div class="data-row"><span>Closing Stock</span><span class="val">£14,000</span></div>
+    <div class="data-row"><span>Current Assets</span><span class="val">£24,000</span></div>
+    <div class="data-row"><span>Current Liabilities</span><span class="val">£8,000</span></div>
+    <div class="data-row"><span>Debtors (Receivables)</span><span class="val">£6,000</span></div>
+    <div class="data-row"><span>Capital Employed</span><span class="val">£60,000</span></div>
+  </div>
+  <div class="info"><strong>Tip:</strong> Cost of Sales is not given — calculate it: Sales − Gross Profit = £65,000 − £45,000 = <strong>£20,000</strong></div>
+
+  <div class="checklist-box">
+    <div class="cl-title"><span>Step 1</span> Tick each ratio off as you calculate it</div>
+    <div class="cl-items" id="cl-q3">
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Gross Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Net Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Current Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Acid Test Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Inventory Days</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q3','q3-prog')"><div class="cl-check"></div><span class="cl-label">Receivable Days</span><span class="cl-type e">Efficiency</span></div>
+    </div>
+    <div class="cl-progress" id="q3-prog">0 / 6 done</div>
+  </div>
+
+  <div class="try-box">
+    <p>Calculate all ratios for Gold Coast 2023 before revealing the answers.</p>
+    <button class="reveal-btn" onclick="reveal('q3-ans',this)">👁 Show All Ratios</button>
+    <div class="answer" id="q3-ans">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ratio</th><th>Type</th><th>Calculation</th><th>Result</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Gross Profit Margin</strong></td><td><span class="pill p">Profit</span></td><td class="mono">(45,000 ÷ 65,000) × 100</td><td class="mono good">69.23%</td><td><em>Strong — keeps 69p per £1 after cost of goods</em></td></tr>
+            <tr><td><strong>Net Profit Margin</strong></td><td><span class="pill p">Profit</span></td><td class="mono">(8,400 ÷ 65,000) × 100</td><td class="mono warn">12.92%</td><td><em>Overheads are eating a lot of gross profit</em></td></tr>
+            <tr><td><strong>Current Ratio</strong></td><td><span class="pill l">Liquid</span></td><td class="mono">24,000 ÷ 8,000</td><td class="mono good">3.0 : 1</td><td><em>Strong — can cover liabilities 3 times over</em></td></tr>
+            <tr><td><strong>Acid Test</strong></td><td><span class="pill l">Liquid</span></td><td class="mono">(24,000 − 14,000) ÷ 8,000</td><td class="mono warn">1.25 : 1</td><td><em>Acceptable but stock is propping up liquidity</em></td></tr>
+            <tr><td><strong>Inventory Days</strong></td><td><span class="pill e">Effic</span></td><td class="mono">((9k+14k)÷2÷20k)×365</td><td class="mono bad">209.87 days</td><td><em>Very slow — stock sits ~7 months. Big problem.</em></td></tr>
+            <tr><td><strong>Receivable Days</strong></td><td><span class="pill e">Effic</span></td><td class="mono">(6,000 ÷ 65,000) × 365</td><td class="mono good">33.69 days</td><td><em>Reasonable — customers paying within a month</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Q4 -->
+
+<div id="q4" class="section">
+  <h2>Q4 — Gold Coast: 2022 vs 2023</h2>
+  <div class="data-box">
+    <h4>2022 Ratios (given for comparison)</h4>
+    <div class="data-row"><span>Gross Profit Margin</span><span class="val">42.89%</span></div>
+    <div class="data-row"><span>Net Profit Margin</span><span class="val">18.36%</span></div>
+    <div class="data-row"><span>Current Ratio</span><span class="val">5.0 : 1</span></div>
+    <div class="data-row"><span>Acid Test Ratio</span><span class="val">3.48 : 1</span></div>
+    <div class="data-row"><span>Asset Turnover</span><span class="val">4.21 : 1</span></div>
+    <div class="data-row"><span>ROCE</span><span class="val">25.47%</span></div>
+    <div class="data-row"><span>Stock Turnover</span><span class="val">12× per year</span></div>
+    <div class="data-row"><span>Debtor Days</span><span class="val">35.87 days</span></div>
+  </div>
+
+  <div class="checklist-box">
+    <div class="cl-title"><span>Step 1</span> For each ratio, write down: what changed, is it better or worse, and why does it matter?</div>
+    <div class="cl-items" id="cl-q4">
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Gross Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Net Profit Margin</span><span class="cl-type p">Profit</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Current Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Acid Test Ratio</span><span class="cl-type l">Liquidity</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Asset Turnover</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Stock Turnover</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Debtor Days</span><span class="cl-type e">Efficiency</span></div>
+      <div class="cl-item" onclick="toggleCheck(this,'cl-q4','q4-prog')"><div class="cl-check"></div><span class="cl-label">Write 3 Recommendations</span><span class="cl-type p">Analysis</span></div>
+    </div>
+    <div class="cl-progress" id="q4-prog">0 / 8 done</div>
+  </div>
+
+  <div class="try-box">
+    <p>Compare each ratio — what changed, is it better or worse, and why does it matter?</p>
+    <button class="reveal-btn" onclick="reveal('q4-compare',this)">👁 Show Comparison</button>
+    <div class="answer" id="q4-compare">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ratio</th><th>2022</th><th>2023</th><th>Change</th><th>What it tells us</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Gross Profit Margin</strong></td><td class="mono">42.89%</td><td class="mono good">69.23%</td><td class="good">▲ +26%</td><td><em>Big improvement — better cost of goods control</em></td></tr>
+            <tr><td><strong>Net Profit Margin</strong></td><td class="mono">18.36%</td><td class="mono bad">12.92%</td><td class="bad">▼ −5.44%</td><td><em>Overheads rising sharply — eating into profits</em></td></tr>
+            <tr><td><strong>Current Ratio</strong></td><td class="mono">5.0</td><td class="mono warn">3.0</td><td class="warn">▼ falling</td><td><em>Still fine but less of a cash cushion</em></td></tr>
+            <tr><td><strong>Acid Test</strong></td><td class="mono">3.48</td><td class="mono bad">1.25</td><td class="bad">▼ big drop</td><td><em>Much weaker — stock building up, less liquid cash</em></td></tr>
+            <tr><td><strong>Asset Turnover</strong></td><td class="mono">4.21</td><td class="mono bad">1.1</td><td class="bad">▼ −3.11</td><td><em>Assets far less productive — underutilisation</em></td></tr>
+            <tr><td><strong>ROCE</strong></td><td class="mono">25.47%</td><td class="mono">N/A</td><td class="mono" style="color:var(--muted)">—</td><td><em>Not provided for 2023 — no direct comparison</em></td></tr>
+            <tr><td><strong>Stock Turnover</strong></td><td class="mono">12×/yr</td><td class="mono bad">~1.7×/yr</td><td class="bad">▼ collapsed</td><td><em>Stock barely moving — major warning sign</em></td></tr>
+            <tr><td><strong>Debtor Days</strong></td><td class="mono">35.87</td><td class="mono good">33.69</td><td class="good">▲ improved</td><td><em>Collecting cash slightly faster — positive</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="try-box" style="margin-top:0.75rem;">
+    <p>Write 3 recommendations to improve Gold Coast's financial health. Try it first.</p>
+    <button class="reveal-btn" onclick="reveal('q4-recs',this)">👁 Show Recommendations</button>
+    <div class="answer" id="q4-recs">
+      <div class="rec-grid">
+        <div class="rec-card">
+          <span class="rec-badge st">Short Term</span>
+          <h4>🗃️ Fix Inventory Management</h4>
+          <p>Stock turnover collapsed from 12×/year to ~1.7×. Stock sits for 210 days. Reduce overstocking, improve demand forecasting, and clear slow-moving lines to free up cash and cut storage costs.</p>
+        </div>
+        <div class="rec-card">
+          <span class="rec-badge st">Short Term</span>
+          <h4>💰 Speed Up Cash Collection</h4>
+          <p>Debtor days improved slightly but more can be done. Introduce stricter credit terms, offer early payment discounts, and chase overdue accounts to boost cash flow further.</p>
+        </div>
+        <div class="rec-card">
+          <span class="rec-badge lt">Long Term</span>
+          <h4>📉 Control Overhead Costs</h4>
+          <p>Gross margin jumped to 69% but net margin fell to 12.92% — indirect costs are the problem. Do a full cost audit, renegotiate supplier contracts, and cut unnecessary overheads.</p>
+        </div>
+        <div class="rec-card">
+          <span class="rec-badge lt">Long Term</span>
+          <h4>🏗️ Improve Asset Utilisation</h4>
+          <p>Asset turnover dropped from 4.21 to 1.1. Consider disposing of underused assets, and focus on growing sales without adding proportionally more assets to the business.</p>
+        </div>
+      </div>
+      <div class="verdict">
+        <h4>📝 Overall Summary</h4>
+        <p>Gold Coast improved its gross profitability in 2023 — a genuine positive. But net profit is down, liquidity has weakened sharply (acid test fell from 3.48 to 1.25), stock is barely moving, and assets are generating far less revenue. The business must tackle its inventory problem and overhead costs urgently before they create a serious cash flow crisis.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo(0,0);
+  }
+  function reveal(id, btn) {
+    const el = document.getElementById(id);
+    el.classList.toggle('visible');
+    if (el.classList.contains('visible')) {
+      btn.textContent = '✅ Hide Answer';
+      btn.classList.add('revealed');
+    } else {
+      btn.textContent = '👁 Show Answer';
+      btn.classList.remove('revealed');
+    }
+  }
+  function toggleCheck(item, listId, progId) {
+    item.classList.toggle('done');
+    if (item.classList.contains('done')) {
+      item.querySelector('.cl-check').textContent = '✓';
+    } else {
+      item.querySelector('.cl-check').textContent = '';
+    }
+    const list = document.getElementById(listId);
+    const total = list.querySelectorAll('.cl-item').length;
+    const done = list.querySelectorAll('.cl-item.done').length;
+    const prog = document.getElementById(progId);
+    if (done === total) {
+      prog.innerHTML = '<strong style="color:var(--green)">✅ All done! Now reveal the answer.</strong>';
+    } else {
+      prog.innerHTML = `<strong>${done} / ${total}</strong> done`;
+    }
+  }
+</script>
+
+</body>
+</html>
